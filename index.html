@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seu Nome — Desenvolvedor(a) Web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12100e;
+    --bg-raised: #1a1714;
+    --ink: #ede9e0;
+    --ink-dim: #8f897a;
+    --amber: #e8a33d;
+    --teal: #4d9b93;
+    --line: #2a251f;
+    --radius: 10px;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection{ background: var(--amber); color: #12100e; }
+  a{ color: inherit; }
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  h1, h2, h3, .mono{ font-family: 'Space Grotesk', sans-serif; }
+  .label{
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--teal);
+    text-transform: lowercase;
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  /* NAV */
+  nav{
+    position: sticky; top:0; z-index: 10;
+    background: rgba(18,16,14,0.85);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 16px 24px;
+  }
+  .logo{ font-family:'JetBrains Mono',monospace; font-weight:600; font-size:0.95rem; }
+  .logo span{ color: var(--amber); }
+  .nav-links{ display:flex; gap: 28px; list-style:none; }
+  .nav-links a{
+    text-decoration:none; font-size:0.9rem; color: var(--ink-dim);
+    transition: color .2s ease;
+  }
+  .nav-links a:hover{ color: var(--ink); }
+
+  /* HERO / TERMINAL */
+  header.hero{ padding: 90px 0 70px; }
+  .hero .wrap{ display:grid; gap: 40px; }
+  .eyebrow{ margin-bottom: 14px; }
+  .hero h1{
+    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    font-weight: 700;
+    max-width: 14ch;
+  }
+  .hero h1 .accent{ color: var(--amber); }
+  .hero p.sub{
+    margin-top: 18px;
+    color: var(--ink-dim);
+    max-width: 46ch;
+    font-size: 1.05rem;
+  }
+  .hero-cta{ margin-top: 28px; display:flex; gap:14px; flex-wrap: wrap; }
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.85rem;
+    padding: 12px 20px;
+    border-radius: var(--radius);
+    text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    border: 1px solid var(--line);
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .btn:hover{ transform: translateY(-2px); }
+  .btn-primary{ background: var(--amber); color:#12100e; border-color: var(--amber); font-weight:600;}
+  .btn-primary:hover{ background:#f0b358; }
+  .btn-ghost{ color: var(--ink); }
+  .btn-ghost:hover{ border-color: var(--teal); color: var(--teal); }
+
+  /* Terminal window — signature element */
+  .terminal{
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,0.6);
+  }
+  .terminal-bar{
+    display:flex; align-items:center; gap:8px;
+    padding: 12px 16px;
+    background: #1f1b17;
+    border-bottom: 1px solid var(--line);
+  }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.r{ background:#e0625a; }
+  .dot.y{ background:#e8b13d; }
+  .dot.g{ background:#5cae7a; }
+  .terminal-title{
+    margin-left: 8px; font-family:'JetBrains Mono',monospace;
+    font-size: 0.78rem; color: var(--ink-dim);
+  }
+  .terminal-body{
+    padding: 22px 20px 26px;
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.88rem;
+    color: #d9d4c8;
+  }
+  .terminal-body .prompt{ color: var(--teal); }
+  .terminal-body .cmd{ color: var(--ink); }
+  .terminal-body .out{ color: var(--ink-dim); display:block; margin: 4px 0 14px; }
+  .terminal-body .out b{ color: var(--amber); font-weight:600; }
+  .cursor{
+    display:inline-block; width:8px; height:1em; background: var(--amber);
+    vertical-align: text-bottom; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+  @media (prefers-reduced-motion: reduce){ .cursor{ animation:none; } }
+
+  /* SECTIONS */
+  section{ padding: 64px 0; border-top: 1px solid var(--line); }
+  section h2{
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+  section > .wrap > .label{ display:block; margin-bottom: 10px; }
+  .section-intro{ color: var(--ink-dim); max-width: 60ch; margin-bottom: 40px; }
+
+  /* SOBRE */
+  .about-grid{ display:grid; grid-template-columns: 1fr; gap: 24px; }
+  .about-grid p{ color: var(--ink-dim); max-width: 62ch; }
+  .about-grid p + p{ margin-top: 14px; }
+
+  /* SKILLS as import statements */
+  .imports{
+    font-family:'JetBrains Mono',monospace;
+    background: var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    font-size: 0.88rem;
+    overflow-x:auto;
+  }
+  .imports div{ padding: 3px 0; color: var(--ink-dim); white-space: nowrap; }
+  .imports .kw{ color: var(--teal); }
+  .imports .mod{ color: var(--amber); }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap: 10px; margin-top: 26px; }
+  .skill-tags span{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.78rem;
+    padding: 7px 13px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    color: var(--ink-dim);
+  }
+
+  /* PROJECTS as files */
+  .projects{ display:grid; gap: 20px; }
+  .project-card{
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 26px 24px;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .project-card:hover{ border-color: var(--amber); transform: translateY(-3px); }
+  .project-file{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.78rem;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .project-card h3{ font-size: 1.2rem; margin-bottom: 8px; }
+  .project-card p{ color: var(--ink-dim); font-size: 0.95rem; margin-bottom: 16px; }
+  .project-stack{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom: 16px; }
+  .project-stack span{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    border: 1px solid var(--line);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .project-links{ display:flex; gap: 16px; }
+  .project-links a{
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.82rem;
+    text-decoration:none;
+    color: var(--amber);
+    border-bottom: 1px solid transparent;
+  }
+  .project-links a:hover{ border-color: var(--amber); }
+
+  /* CONTACT */
+  .contact-box{
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align:center;
+  }
+  .contact-box h2{ margin-bottom: 10px; }
+  .contact-box p{ color: var(--ink-dim); margin-bottom: 26px; }
+  .contact-links{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+  footer{
+    padding: 30px 0 50px;
+    text-align:center;
+    color: var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;
+    font-size: 0.78rem;
+  }
+
+  @media (min-width: 760px){
+    .hero .wrap{ grid-template-columns: 1fr 1fr; align-items:center; }
+    .about-grid{ grid-template-columns: 1.1fr 0.9fr; }
+    .projects{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">seu-nome<span>.dev</span></div>
+    <ul class="nav-links">
+      <li><a href="#sobre">sobre</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projetos">projetos</a></li>
+      <li><a href="#contato">contato</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="label eyebrow">// disponível para estágio</span>
+      <h1>Construindo minhas primeiras linhas de código <span class="accent">em público.</span></h1>
+      <p class="sub">
+        Sou estudante de Desenvolvimento Web (3º período) e estou em busca da minha primeira oportunidade
+        como desenvolvedor(a). Aqui estão os projetos com os quais venho aprendendo.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#projetos">Ver projetos</a>
+        <a class="btn btn-ghost" href="#contato">Falar comigo</a>
+      </div>
+    </div>
+
+    <div class="terminal" aria-hidden="false">
+      <div class="terminal-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="terminal-title">whoami.sh</span>
+      </div>
+      <div class="terminal-body">
+        <span class="prompt">$</span> <span class="cmd">whoami</span>
+        <span class="out">Seu Nome — estudante &amp; dev iniciante</span>
+
+        <span class="prompt">$</span> <span class="cmd">cat status.txt</span>
+        <span class="out">3º período · <b>aprendendo todo dia</b> · aberto(a) a estágio</span>
+
+        <span class="prompt">$</span> <span class="cmd">ls habilidades/</span>
+        <span class="out">html  css  javascript  git<span class="cursor"></span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="sobre">
+  <div class="wrap">
+    <span class="label">01 · sobre</span>
+    <h2>Ainda no começo — e é exatamente por isso que estou aqui.</h2>
+    <div class="about-grid">
+      <p>
+        Estou cursando o 3º período de Desenvolvimento Web (ou substitua pelo nome do seu curso) e venho
+        estudando por conta própria e nas disciplinas da faculdade. Ainda não tenho experiência profissional,
+        mas já construí projetos práticos aplicando o que aprendo — e busco minha primeira oportunidade para
+        continuar crescendo dentro de um time.
+      </p>
+      <p>
+        Gosto de entender como as coisas funcionam por baixo do capô, resolver problemas pequenos até
+        conseguirem virar soluções completas, e estou animado(a) para aprender as boas práticas do mercado
+        na prática.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <span class="label">02 · habilidades</span>
+    <h2>O que já sei usar</h2>
+    <p class="section-intro">Meu ponto de partida — front-end básico e as ferramentas do dia a dia de um dev.</p>
+
+    <div class="imports">
+      <div><span class="kw">import</span> { <span class="mod">Estrutura</span> } <span class="kw">from</span> 'html5';</div>
+      <div><span class="kw">import</span> { <span class="mod">Estilo</span>, <span class="mod">Responsividade</span> } <span class="kw">from</span> 'css3';</div>
+      <div><span class="kw">import</span> { <span class="mod">Lógica</span>, <span class="mod">DOM</span> } <span class="kw">from</span> 'javascript';</div>
+      <div><span class="kw">import</span> { <span class="mod">Versionamento</span> } <span class="kw">from</span> 'git-github';</div>
+    </div>
+
+    <div class="skill-tags">
+      <span>HTML5</span>
+      <span>CSS3 / Flexbox / Grid</span>
+      <span>JavaScript</span>
+      <span>Git &amp; GitHub</span>
+      <span>Responsividade</span>
+      <span>Aprendendo: [ex. React]</span>
+    </div>
+  </div>
+</section>
+
+<section id="projetos">
+  <div class="wrap">
+    <span class="label">03 · projetos</span>
+    <h2>O que já construí</h2>
+    <p class="section-intro">Dois projetos práticos usados para aplicar o conteúdo estudado na faculdade.</p>
+
+    <div class="projects">
+      <div class="project-card">
+        <div class="project-file">projeto-01.html</div>
+        <h3>Nome do Projeto 1</h3>
+        <p>Descreva em 1–2 frases o que o projeto faz e qual problema ele resolve. Ex: "Landing page
+        responsiva para um evento fictício, com formulário de inscrição validado em JavaScript."</p>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#">Ver código →</a>
+          <a href="#">Ver online →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-file">projeto-02.html</div>
+        <h3>Nome do Projeto 2</h3>
+        <p>Descreva o segundo projeto aqui. Ex: "Clone de interface de uma calculadora, com toda a lógica
+        de operações implementada em JavaScript puro."</p>
+        <div class="project-stack">
+          <span>HTML</span><span>CSS</span><span>JavaScript</span>
+        </div>
+        <div class="project-links">
+          <a href="#">Ver código →</a>
+          <a href="#">Ver online →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato">
+  <div class="wrap">
+    <span class="label">04 · contato</span>
+    <div class="contact-box">
+      <h2>Vamos conversar?</h2>
+      <p>Estou aberto(a) a oportunidades de estágio em desenvolvimento web.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:seuemail@exemplo.com">Enviar e-mail</a>
+        <a class="btn btn-ghost" href="https://linkedin.com/in/seu-usuario" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/seu-usuario" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  feito com HTML, CSS &amp; um pouco de café — © <span id="year"></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
